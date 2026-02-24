@@ -1,8 +1,24 @@
-steps:
-- script: echo "Hello, Azure DevOps!"
-  displayName: 'Run a simple script'
+trigger:
+- main
 
-- task: PowerShell@2
-  inputs:
-    filePath: 'scripts/test.ps1'
-  displayName: 'Run PowerShell script'
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    steps:
+    - script: echo "Building the application..."
+      displayName: 'Build Step'
+
+- stage: Test
+  jobs:
+  - job: TestJob
+    steps:
+    - script: echo "Running tests..."
+      displayName: 'Test Step'
+    - task: PowerShell@2
+      inputs:
+        filePath: 'scripts/test.ps1'
+      displayName: 'Run PowerShell Test Script'
